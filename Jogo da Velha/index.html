@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Velha</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Menu Hamburguer -->
+    <div class="menu-hamburguer">
+        <button id="menu-toggle">&#9776;</button>
+        <nav id="menu" class="menu">
+            <ul>
+                <li><a href="#">Início</a></li>
+                <li><a href="#" id="sobre-link">Sobre</a></li>
+                <li><a href="#" id="contato-link">Contato</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <header>
+        <img src="https://plenarinho.leg.br/wp-content/uploads/2017/02/jogo_da_velha_2.jpg" 
+             alt="Imagem de Cabeçalho" class="header-image">
+    </header>
+
+    <div class="game-board">
+        <div class="cell" data-index="0"></div>
+        <div class="cell" data-index="1"></div>
+        <div class="cell" data-index="2"></div>
+        <div class="cell" data-index="3"></div>
+        <div class="cell" data-index="4"></div>
+        <div class="cell" data-index="5"></div>
+        <div class="cell" data-index="6"></div>
+        <div class="cell" data-index="7"></div>
+        <div class="cell" data-index="8"></div>
+    </div>
+
+    <p class="status">Vez do jogador X</p>
+    <button class="reset">Reiniciar Jogo</button>
+
+<!-- Modal de Sobre -->
+<div id="sobre-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" id="close-sobre-btn">&times;</span> <!-- Botão de Fechar -->
+        <h2>Sobre</h2>
+        <p>Bem-vindo ao nosso Jogo da Velha online! Aqui, você pode jogar contra um amigo ou desafiar a inteligência artificial em partidas rápidas e divertidas. Com uma interface simples e intuitiva, garantimos uma experiência fluida para todos os jogadores.</p>
+        <p>Divirta-se e desafie suas estratégias para conquistar a vitória!</p>
+        <p><strong>Sua Equipe Criativa! 😊</strong></p>
+    </div>
+</div>
+
+<!-- Formulário de Contato -->
+<div id="contato-form" class="contact-form">
+    <span class="close-btn" id="close-btn">&times;</span> <!-- Adicionando o botão de fechamento -->
+    <h2>Entre em Contato</h2>
+    <form id="contactForm">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" required>
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        
+        <label for="mensagem">Mensagem:</label>
+        <textarea id="mensagem" name="mensagem" required></textarea>
+        
+        <button type="submit">Enviar</button>
+    </form>
+    <p id="form-status"></p>
+</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
