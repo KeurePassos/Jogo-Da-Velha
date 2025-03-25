@@ -1,4 +1,4 @@
-# Jogo da Velha Online
+# Jogo da Velha
 
 Este projeto é uma versão interativa do clássico Jogo da Velha (Tic-Tac-Toe), desenvolvido com HTML, CSS e JavaScript. Ele permite que dois jogadores disputem entre si ou que um jogador enfrente o computador. O jogo inclui funcionalidades como detecção de vitória, reinício da partida, menu de navegação e modais informativos.
 
