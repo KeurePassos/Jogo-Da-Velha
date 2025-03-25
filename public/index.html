@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Velha</title>
+    <link rel="stylesheet" href="style.css">
+
+    <img src="https://plenarinho.leg.br/wp-content/uploads/2017/02/jogo_da_velha_2.jpg" alt="Imagem de Cabeçalho" class="header-image">
+    <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+
+</head>
+<body>
+    <audio id="victorySound" src="victory-sound.mp3"></audio>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+        import { getDatabase, ref, set, get, push, onValue } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDS2YfxZbvZwyzTrllZgJWcmKuq51OyIxE",
+            authDomain: "jogo-da-velha-e0d62.firebaseapp.com",
+            databaseURL: "https://jogo-da-velha-keure-passos.firebaseio.com",
+            projectId: "jogo-da-velha-e0d62",
+            storageBucket: "jogo-da-velha-e0d62.firebasestorage.app",
+            messagingSenderId: "908444283125",
+            appId: "1:908444283125:web:9e0314bfb68b068e96d5bc",
+            measurementId: "G-NTZ70N0NTF"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        let currentPlayer = 'X';
+        let board = Array(9).fill(null);
+        const cells = document.querySelectorAll('.cell');
+        const statusText = document.querySelector('.status');
+        const resetButton = document.querySelector('.reset');
+        let contraComputador = false;
+        let gameActive = true;
+        let marks = []; // Para a lógica da IA
+        const WINS_POSSIBLE = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+
+        function updateStatus() {
+            statusText.textContent = `Vez do jogador ${currentPlayer}`;
+        }
+
+        function checkWinner() {
+            for (let pattern of WINS_POSSIBLE) {
+                const [a, b, c] = pattern;
+                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                    gameActive = false;
+                    const winner = board[a];
+                    statusText.textContent = `🎉 Jogador ${winner} venceu! 🎉`;
+                    cells[a].classList.add('winner-line');
+                    cells[b].classList.add('winner-line');
+                    cells[c].classList.add('winner-line');
+
+                    // Disparar confetes
+                    const jsConfetti = new JSConfetti();
+                    jsConfetti.addConfetti();
+
+                    // Reproduzir som de vitória
+                    const victorySound = document.getElementById('victorySound');
+                    victorySound.volume = 0.5;
+                    victorySound.play();
+                    
+                    return true;
+                }
+            }
+
+            if (!board.includes(null)) {
+                gameActive = false;
+                statusText.textContent = "🤝 Empate! Tentem novamente!";
+                return true;
+            }
+
+            return false;
+        }
+
+        // --- Lógica da IA Integrada ---
+        function cellElement(index) {
+            return board[index];
+        }
+
+        function setCellElementIA(index) {
+            if (board[index] === null) {
+                board[index] = 'O';
+                cells[index].textContent = 'O';
+                cells[index].classList.add('O');
+                marks.push('O');
+                return true; // Indica que a jogada foi feita
+            }
+            return false;
+        }
+
+        function IArandomPlay(combinationIndices) {
+            const validIndices = combinationIndices.filter(index => board[index] === null);
+            if (validIndices.length > 0) {
+                const randomIndex = Math.floor(Math.random() * validIndices.length);
+                return setCellElementIA(validIndices[randomIndex]);
+            }
+            return false;
+        }
+
+        function IAcheckInit(possibleWins) {
+            for (const combination of possibleWins) {
+                const emptyIndices = combination.filter(index => board[index] === null);
+                if (emptyIndices.length > 0) {
+                    if (IArandomPlay(emptyIndices)) return true; // Jogada feita
+                }
+            }
+            return false;
+        }
+
+        function IAcheck() {
+            if (!gameActive || !contraComputador || currentPlayer !== 'O') return false; // Retorna false se não jogar
+
+            let played = false;
+
+            // Prioridade 1: Vitória da IA
+            for (const combination of WINS_POSSIBLE) {
+                const oCount = combination.filter(index => board[index] === 'O').length;
+                const emptyIndex = combination.find(index => board[index] === null);
+                if (oCount === 2 && emptyIndex !== undefined) {
+                    played = setCellElementIA(emptyIndex);
+                    break;
+                }
+            }
+
+            if (played) return true;
+
+            // Prioridade 2: Bloquear vitória do jogador
+            for (const combination of WINS_POSSIBLE) {
+                const xCount = combination.filter(index => board[index] === 'X').length;
+                const emptyIndex = combination.find(index => board[index] === null);
+                if (xCount === 2 && emptyIndex !== undefined) {
+                    played = setCellElementIA(emptyIndex);
+                    break;
+                }
+            }
+
+            if (played) return true;
+
+            // Prioridade 3: Tentar criar uma sequência
+            for (const combination of WINS_POSSIBLE) {
+                const oCount = combination.filter(index => board[index] === 'O').length;
+                const emptyIndex = combination.find(index => board[index] === null);
+                if (oCount === 1 && emptyIndex !== undefined) {
+                    played = setCellElementIA(emptyIndex);
+                    break;
+                }
+            }
+
+            if (played) return true;
+
+            // Prioridade 4: Jogada aleatória (pode ser melhorada)
+            const emptyCells = board.reduce((acc, val, index) => {
+                if (val === null) acc.push(index);
+                return acc;
+            }, []);
+            if (emptyCells.length > 0) {
+                played = IArandomPlay(emptyCells);
+            }
+
+            return played; // Retorna se a IA jogou
+        }
+        // --- Fim da Lógica da IA ---
+
+        // Atualiza o tabuleiro com o clique
+        cells.forEach(cell => {
+            cell.addEventListener('click', () => {
+                const index = parseInt(cell.dataset.index);
+
+                // Não permite jogadas após o jogo acabar ou se o campo já foi preenchido
+                if (board[index] !== null || !gameActive) return;
+
+                // Realiza a jogada
+                board[index] = currentPlayer;
+                cell.textContent = currentPlayer;
+                cell.classList.add(currentPlayer);
+                marks.push(currentPlayer); // Adiciona para a lógica da IA
+
+                // Verifica se alguém ganhou após a jogada do jogador
+                if (checkWinner()) {
+                    return;
+                } else {
+                    // Se o jogo não acabou, troca a vez do jogador
+                    if (!contraComputador) {
+                        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                        updateStatus();
+                    } else if (currentPlayer === 'X') {
+                        currentPlayer = 'O';
+                        updateStatus();
+                        setTimeout(() => {
+                            if (IAcheck()) { // A IA fez uma jogada
+                                // Verifica se alguém ganhou após a jogada da IA
+                                if (checkWinner()) {
+                                    return; // Interrompe se a IA ganhou
+                                }
+                                if (!gameActive) return;
+                                currentPlayer = 'X';
+                                updateStatus();
+                            }
+                        }, 500);
+                    }
+                }
+            });
+        });
+
+        // Reiniciar o jogo
+        resetButton.addEventListener('click', resetGame);
+
+        function resetGame() {
+            board = Array(9).fill(null);
+            gameActive = true;
+            currentPlayer = 'X';
+            marks = []; // Reseta para a IA
+            updateStatus();
+            cells.forEach(cell => {
+                cell.textContent = '';
+                cell.classList.remove('X', 'O', 'winner-line');
+            });
+        }
+
+        // Lógica do botão "Jogar contra o Computador"
+        const jogarContraComputadorBtn = document.getElementById('jogar-contra-computador');
+        jogarContraComputadorBtn.addEventListener('click', () => {
+            contraComputador = true;
+            resetGame();
+            statusText.textContent = "Sua vez!";
+        });
+    </script>
+
+    <div class="menu-hamburguer">
+        <button id="menu-toggle">&#9776;</button>
+        <nav id="menu" class="menu">
+            <ul>
+                <li><a href="#">Início</a></li>
+                <li><a href="#" id="sobre-link">Sobre</a></li>
+                <li><a href="#" id="contato-link">Contato</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="game-board">
+        <div class="cell" data-index="0"></div>
+        <div class="cell" data-index="1"></div>
+        <div class="cell" data-index="2"></div>
+        <div class="cell" data-index="3"></div>
+        <div class="cell" data-index="4"></div>
+        <div class="cell" data-index="5"></div>
+        <div class="cell" data-index="6"></div>
+        <div class="cell" data-index="7"></div>
+        <div class="cell" data-index="8"></div>
+    </div>
+
+    <p class="status">Vez do jogador X</p>
+    <button class="reset">Reiniciar Jogo</button>
+
+    <div class="game-options">
+        <button id="jogar-contra-computador">Jogar contra o Computador</button>
+    </div>
+</body>
+</html>
