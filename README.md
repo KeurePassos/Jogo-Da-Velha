@@ -1,55 +1,84 @@
 # Jogo da Velha Online
 
-Este projeto é uma versão simples e divertida do **Jogo da Velha** (também conhecido como **Tic-Tac-Toe**) desenvolvida com **HTML**, **CSS** e **JavaScript**. Ele permite que dois jogadores joguem entre si em um jogo interativo, com a possibilidade de reiniciar a partida e acessar informações sobre o jogo.
+Este projeto é uma versão interativa do clássico Jogo da Velha (Tic-Tac-Toe), desenvolvido com HTML, CSS e JavaScript. Ele permite que dois jogadores disputem entre si ou que um jogador enfrente o computador. O jogo inclui funcionalidades como detecção de vitória, reinício da partida, menu de navegação e modais informativos.
 
- <div>
-<img src="http://img.shields.io/static/v1?label=STATUS%20DO%20PROJETO&message=%20EM+ANDAMENTO&color=GREEN&style=for-the-badge_blank"></a>
-  </div>
-   
+<div>
+<img src="http://img.shields.io/static/v1?label=STATUS%20DO%20PROJETO&message=%20EM%20ANDAMENTO&color=GREEN&style=for-the-badge_blank">
+</div>
+
 ## Funcionalidades
 
-- **Jogo Interativo:** Dois jogadores podem jogar alternando entre os símbolos X e O.
-- **Tabuleiro de 3x3:** O tabuleiro do jogo é uma grade de 3x3, onde cada jogador pode clicar em uma célula vazia para marcar sua jogada.
-- **Indicação do Vencedor:** O jogo detecta automaticamente quando um dos jogadores vence e exibe uma mensagem com o vencedor.
-- **Reinício do Jogo:** Após o fim de uma partida, é possível reiniciar o jogo com um botão de "Reiniciar Jogo".
-- **Menu Hamburguer:** O menu oferece links para acessar informações sobre o jogo e uma seção de contato.
-- **Modal de Sobre:** Explicação sobre o jogo, como jogá-lo e informações gerais.
-- **Formulário de Contato:** Permite ao usuário enviar mensagens para a equipe de desenvolvimento.
+* **Jogo Interativo:** Permite que dois jogadores joguem alternando entre os símbolos "X" e "O".
+* **Modo Contra o Computador:** Possibilidade de jogar contra a IA do jogo.
+* **Tabuleiro 3x3:** Interface do jogo em formato de grade 3x3.
+* **Detecção de Vitória/Empate:** O jogo identifica automaticamente o vencedor ou um empate e exibe a mensagem correspondente.
+* **Reinício do Jogo:** Botão para reiniciar a partida a qualquer momento.
+* **Menu Hambúrguer:** Navegação para acessar informações sobre o jogo e opções de contato.
+* **Modais Informativos:**
+    * **Sobre:** Informações sobre o jogo e como jogar.
+    * **Contato:** Opções para entrar em contato com o desenvolvedor.
+* **Animações e Efeitos Visuais:**
+    * Confetes ao final da partida.
+    * Estilos para destacar a linha vencedora.
+* **Efeitos Sonoros:** Som de vitória ao final da partida.
 
 ## Tecnologias Utilizadas
 
-- **HTML:** Estrutura básica da página e organização dos elementos.
-- **CSS:** Estilos responsivos e animações.
-- **JavaScript:** Lógica de interação com o tabuleiro, alternância entre jogadores, detecção de vitória e manipulação dos modais.
-
+* **HTML:** Estrutura da página e organização dos elementos do jogo.
+* **CSS:** Estilos, layout, animações e responsividade.
+* **JavaScript:** Lógica do jogo, interação com o usuário, IA, manipulação do DOM e funcionalidades extras.
+  
 ## Instalação
+1.  Clone o repositório do projeto:
 
-1. Clone ou baixe os arquivos do projeto.
-2. Abra o arquivo `index.html` em seu navegador para jogar.
+<code>git clone https://github.com/KeurePassos/Jogo-Da-Velha.git</code>
+
+2.  Navegue até a pasta do projeto clonado:
+cd jogo-da-velha
+
+3.  Abra o arquivo `index.html` em um navegador web para jogar.
 
 ## Como Jogar
 
-1. Clique nas células vazias do tabuleiro para colocar seu símbolo (X ou O).
-2. O jogo alterna entre os jogadores automaticamente.
-3. O primeiro jogador a alinhar três símbolos em uma linha (horizontal, vertical ou diagonal) vence o jogo.
-4. Se desejar reiniciar o jogo, clique no botão "Reiniciar Jogo".
-5. Para saber mais sobre o jogo ou entrar em contato com a equipe, use o menu ou o formulário de contato.
+1.  **Início:** O jogo começa com o jogador "X".
+2.  **Jogadas:** Clique nas células vazias do tabuleiro para marcar com o seu símbolo ("X" ou "O").
+3.  **Alternância de Jogadores:** Os jogadores se alternam a cada jogada.
+4.  **Vitória:** O primeiro jogador a alinhar três símbolos iguais em uma linha, coluna ou diagonal vence.
+5.  **Empate:** Se o tabuleiro for preenchido sem que nenhum jogador complete uma linha, a partida termina em empate.
+6.  **Reiniciar:** Clique no botão "Reiniciar Jogo" para começar uma nova partida.
+7.  **Jogar contra o Computador:** Clique no botão "Jogar contra o Computador" para ativar o modo de jogo contra a IA.
+8.  **Menu:** Utilize o menu hambúrguer para acessar as seções "Sobre" e "Contato".
 
 ## Estrutura do Projeto
 
-- `index.html`: Página principal com a estrutura do jogo e os modais.
-- `style.css`: Estilos para o layout, animações e componentes.
-- `script.js`: Lógica de funcionamento do Jogo da Velha, manipulação do tabuleiro e interação com o menu.
+* `index.html`: Arquivo principal com a estrutura HTML do jogo e os modais.
+* `style.css`: Arquivo com os estilos CSS para o layout, animações e componentes do jogo.
+* `script.js`: Arquivo JavaScript contendo a lógica do jogo, IA, manipulação do DOM e interações com o usuário.
+* `victory-sound.mp3`: Arquivo de áudio para o som de vitória.
+* 
+## Lógica da IA
 
-Aproveite o jogo e desafie seus amigos para uma partida divertida! 🎮
+O jogo inclui uma lógica de Inteligência Artificial para o modo "Jogar contra o Computador". A IA segue as seguintes prioridades:
+
+1.  **Vitória da IA:** Tenta vencer na próxima jogada.
+2.  **Bloquear Vitória do Jogador:** Impede que o jogador vença na próxima jogada.
+3.  **Criar Sequência:** Tenta criar uma sequência para vencer.
+4.  **Jogada Aleatória:** Se nenhuma das opções anteriores for possível, faz uma jogada aleatória.
+
+## Contribuição
+
+Contribuições são bem-vindas! Se você tiver sugestões de melhorias, correções de bugs ou novas funcionalidades, sinta-se à vontade para abrir uma Issue ou enviar um Pull Request.
+
+* Este projeto foi desenvolvido por Kéure Passos Soares.
+  
+## Contato
+
+Você pode me contatar em:
 
 <div>
-  
-## Você pode me contatar em:
- 
-  <a href="https://instagram.com/keure_passos" target="_blank"><img src="https://img.shields.io/badge/-Instagram-%23E4405F?style=for-the-badge&logo=instagram&logoColor=white" target="_blank"></a>
-  <a href="https://www.linkedin.com/in/k%C3%A9ure-passos-soares-6b6ba8268/" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" target="_blank"></a> 
+<a href="https://instagram.com/keure_passos" target="_blank"><img src="https://img.shields.io/badge/-Instagram-%23E4405F?style=for-the-badge&logo=instagram&logoColor=white" target="_blank"></a>
+<a href="https://www.linkedin.com/in/k%C3%A9ure-passos-soares-6b6ba8268/" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" target="_blank"></a>
 <a href="mailto:keurepassos17@gmail.com">
-  <img src="https://img.shields.io/badge/-Gmail-%23333?style=for-the-badge&logo=gmail&logoColor=white" alt="Gmail" />
+<img src="https://img.shields.io/badge/-Gmail-%23333?style=for-the-badge&logo=gmail&logoColor=white" alt="Gmail" />
 </a>
 </div>
