@@ -34,7 +34,7 @@ Este projeto é uma versão interativa do clássico Jogo da Velha (Tic-Tac-Toe),
 <code>git clone https://github.com/KeurePassos/Jogo-Da-Velha.git</code>
 
 2.  Navegue até a pasta do projeto clonado:
-cd jogo-da-velha
+   <code>cd Jogo-Da-Velha</code>
 
 3.  Abra o arquivo `index.html` em um navegador web para jogar.
 
