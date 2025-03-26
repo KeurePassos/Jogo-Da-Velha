@@ -2,16 +2,29 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
     <title>Jogo da Velha</title>
     <link rel="stylesheet" href="style.css">
 
-    <img src="https://plenarinho.leg.br/wp-content/uploads/2017/02/jogo_da_velha_2.jpg" alt="Imagem de Cabeçalho" class="header-image">
     <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
 
 </head>
 <body>
+
+    <header>
+        <h1>Jogo da Velha</h1>
+    </header>
+
     <audio id="victorySound" src="victory-sound.mp3"></audio>
+
+    <div class="score-board">
+        <div class="player-score">
+            Jogador X: <span id="score-x">0</span>
+        </div>
+        <div class="player-score">
+            Jogador O: <span id="score-o">0</span>
+        </div>
+    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
@@ -50,6 +63,17 @@
             [2, 4, 6]
         ];
 
+         // Placar
+    let scoreX = 0;
+    let scoreO = 0;
+    const scoreXSpan = document.getElementById('score-x');
+    const scoreOSpan = document.getElementById('score-o');
+
+    function updateScoreboard() {
+        scoreXSpan.textContent = scoreX;
+        scoreOSpan.textContent = scoreO;
+    }
+
         function updateStatus() {
             statusText.textContent = `Vez do jogador ${currentPlayer}`;
         }
@@ -65,18 +89,27 @@
                     cells[b].classList.add('winner-line');
                     cells[c].classList.add('winner-line');
 
-                    // Disparar confetes
-                    const jsConfetti = new JSConfetti();
-                    jsConfetti.addConfetti();
 
-                    // Reproduzir som de vitória
-                    const victorySound = document.getElementById('victorySound');
-                    victorySound.volume = 0.5;
-                    victorySound.play();
-                    
-                    return true;
+                // Atualizar placar
+                if (winner === 'X') {
+                    scoreX++;
+                } else {
+                    scoreO++;
                 }
+                updateScoreboard(); // Chamada para atualizar o placar
+
+                // Disparar confetes
+                const jsConfetti = new JSConfetti();
+                jsConfetti.addConfetti();
+
+                // Reproduzir som de vitória
+                const victorySound = document.getElementById('victorySound');
+                victorySound.volume = 0.05;
+                victorySound.play();
+
+                return true;
             }
+        }
 
             if (!board.includes(null)) {
                 gameActive = false;
@@ -232,6 +265,56 @@
             });
         }
 
+            // Lógica do menu hambúrguer
+    const menuToggle = document.getElementById("menu-toggle");
+    const menu = document.getElementById("menu");
+
+    menuToggle.addEventListener("click", function() {
+      menu.classList.toggle("active");
+    });
+
+    // Fecha o menu ao clicar fora dele
+    document.addEventListener("click", function(event) {
+      if (!menu.contains(event.target) && !menuToggle.contains(event.target)) {
+        menu.classList.remove("active");
+      }
+    });
+
+          // Lógica dos modais Sobre e Contato
+          const sobreModal = document.getElementById("sobre-modal");
+        const contatoModal = document.getElementById("contato-form");
+
+        const sobreLink = document.getElementById("sobre-link");
+        const contatoLink = document.getElementById("contato-link");
+
+        const closeSobreBtn = document.getElementById("close-sobre-btn");
+        const closeContatoBtn = document.getElementById("close-btn");
+
+        sobreLink.addEventListener("click", function () {
+            sobreModal.style.display = "block";
+        });
+
+        contatoLink.addEventListener("click", function () {
+            contatoModal.style.display = "block";
+        });
+
+        closeSobreBtn.addEventListener("click", function () {
+            sobreModal.style.display = "none";
+        });
+
+        closeContatoBtn.addEventListener("click", function () {
+            contatoModal.style.display = "none";
+        });
+
+        window.addEventListener("click", function (event) {
+            if (event.target === sobreModal) {
+                sobreModal.style.display = "none";
+            }
+            if (event.target === contatoModal) {
+                contatoModal.style.display = "none";
+            }
+        });
+
         // Lógica do botão "Jogar contra o Computador"
         const jogarContraComputadorBtn = document.getElementById('jogar-contra-computador');
         jogarContraComputadorBtn.addEventListener('click', () => {
@@ -252,6 +335,36 @@
         </nav>
     </div>
 
+<!-- Modal de Sobre -->
+<div id="sobre-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" id="close-sobre-btn">&times;</span> <!-- Botão de Fechar -->
+        <h2>Sobre</h2>
+        <p>Bem-vindo ao nosso Jogo da Velha online! Aqui, você pode jogar contra um amigo ou desafiar a inteligência artificial em partidas rápidas e divertidas. Com uma interface simples e intuitiva, garantimos uma experiência fluida para todos os jogadores.</p>
+        <p>Divirta-se e desafie suas estratégias para conquistar a vitória!</p>
+        <p><strong>Sua Equipe Criativa! 😊</strong></p>
+    </div>
+</div>
+
+<!-- Formulário de Contato -->
+<div id="contato-form" class="contact-form">
+    <span class="close-btn" id="close-btn">&times;</span> 
+    <h2>Entre em contato</h2>
+    <form id="contactForm">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" required>
+       
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+       
+        <label for="mensagem">Mensagem:</label>
+        <textarea id="mensagem" name="mensagem" required></textarea>
+       
+        <button type="submit">Enviar</button>
+    </form>
+    <p id="form-status"></p>
+</div>
+
     <div class="game-board">
         <div class="cell" data-index="0"></div>
         <div class="cell" data-index="1"></div>
@@ -265,9 +378,9 @@
     </div>
 
     <p class="status">Vez do jogador X</p>
-    <button class="reset">Reiniciar Jogo</button>
 
-    <div class="game-options">
+    <div class="game-controls">
+        <button class="reset">Reiniciar Jogo</button>
         <button id="jogar-contra-computador">Jogar contra o Computador</button>
     </div>
 </body>
