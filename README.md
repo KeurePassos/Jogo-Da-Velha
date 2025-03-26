@@ -2,8 +2,10 @@
 
 Este projeto é uma versão interativa do clássico Jogo da Velha (Tic-Tac-Toe), desenvolvido com HTML, CSS e JavaScript. Ele permite que dois jogadores disputem entre si ou que um jogador enfrente o computador. O jogo inclui funcionalidades como detecção de vitória, reinício da partida, menu de navegação e modais informativos.
 
+Você pode acessar o jogo online na seguinte URL:<code>https://jogo-da-velha-e0d62.web.app</code>
+
 <div>
-<img src="http://img.shields.io/static/v1?label=STATUS%20DO%20PROJETO&message=%20EM%20ANDAMENTO&color=GREEN&style=for-the-badge_blank">
+<img src="http://img.shields.io/static/v1?label=STATUS%20DO%20PROJETO&message=%20CONCLUIDO&color=GREEN&style=for-the-badge_blank">
 </div>
 
 ## Funcionalidades
