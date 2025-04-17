@@ -57,7 +57,7 @@ Você pode acessar o jogo online na seguinte URL:<code>https://jogo-da-velha-e0d
 * `style.css`: Arquivo com os estilos CSS para o layout, animações e componentes do jogo.
 * `script.js`: Arquivo JavaScript contendo a lógica do jogo, IA, manipulação do DOM e interações com o usuário.
 * `victory-sound.mp3`: Arquivo de áudio para o som de vitória.
-* 
+  
 ## Lógica da IA
 
 O jogo inclui uma lógica de Inteligência Artificial para o modo "Jogar contra o Computador". A IA segue as seguintes prioridades:
