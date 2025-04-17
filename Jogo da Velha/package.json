@@ -1,0 +1,17 @@
+{
+  "name": "jogo-da-velha",
+  "version": "1.0.0",
+  "description": "Este projeto é uma versão simples e divertida do **Jogo da Velha** (também conhecido como **Tic-Tac-Toe**) desenvolvida com **HTML**, **CSS** e **JavaScript**. Ele permite que dois jogadores joguem entre si em um jogo interativo, com a possibilidade de reiniciar a partida e acessar informações sobre o jogo.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "mssql": "^11.0.1"
+  }
+}
